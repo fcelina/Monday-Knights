@@ -337,7 +337,7 @@ const MondayKnightsWebsite = () => {
                     <input
                       type="checkbox"
                       id="business-privacy"
-                      checked={formData.privacyAgreed || false}
+                      checked={formData.privacyAgreed !== undefined ? formData.privacyAgreed : true}
                       onChange={(e) => handleInputChange('privacyAgreed', e.target.checked)}
                     />
                     <label htmlFor="business-privacy" className="checkbox-label">
