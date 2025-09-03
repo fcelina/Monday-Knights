@@ -537,6 +537,8 @@ const AdminDashboard = ({ onLogout }) => {
   const [blogPosts, setBlogPosts] = useState([]);
   const [newPost, setNewPost] = useState({ title: '', content: '', image_url: '' });
   const [editingPost, setEditingPost] = useState(null);
+  const [individualContacts, setIndividualContacts] = useState([]);
+  const [businessContacts, setBusinessContacts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
