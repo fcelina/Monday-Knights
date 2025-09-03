@@ -136,6 +136,15 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
 
 # API Routes
 
+@api_router.get("/")
+async def root():
+    return {"message": "Hello World"}
+
+# Also add a route without trailing slash for compatibility
+@api_router.get("")
+async def root_no_slash():
+    return {"message": "Hello World"}
+
 # Admin Authentication
 @api_router.post("/admin/login")
 async def admin_login(credentials: AdminLogin):
