@@ -379,8 +379,6 @@ const MondayKnightsWebsite = () => {
             </div>
             
             <div className="about-text">
-              <h3 style={{ color: '#ca6ce6', marginBottom: '20px' }}>Events and Announcements</h3>
-              
               {blogPosts.length === 0 ? (
                 <p>No events or announcements yet. Check back soon for updates!</p>
               ) : (
