@@ -20,6 +20,7 @@ const MondayKnightsWebsite = () => {
   useEffect(() => {
     fetchAboutContent();
     fetchBlogPosts();
+    fetchContacts();
   }, []);
 
   const fetchAboutContent = async () => {
