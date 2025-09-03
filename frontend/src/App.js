@@ -55,7 +55,7 @@ const MondayKnightsWebsite = () => {
 
   const showDynamicForm = (type) => {
     setUserType(type);
-    setFormData({});
+    setFormData({ privacyAgreed: true }); // Pre-check privacy agreement
   };
 
   const handleInputChange = (field, value) => {
