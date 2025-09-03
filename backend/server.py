@@ -37,6 +37,32 @@ SECRET_KEY = "monday_knights_secret_key_2025"
 ADMIN_EMAIL = "federico.celina@gmail.com"
 ADMIN_PASSWORD = "testingsite"
 
+# Email configuration
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
+NOTIFICATION_EMAIL = os.environ.get('ADMIN_EMAIL', 'federico.celina@gmail.com')
+
+# Email functions
+def send_notification_email(subject: str, content: str):
+    """Send notification email to admin"""
+    if not SENDGRID_API_KEY:
+        print("SendGrid API key not configured, skipping email notification")
+        return False
+        
+    try:
+        message = Mail(
+            from_email=NOTIFICATION_EMAIL,
+            to_emails=[NOTIFICATION_EMAIL],
+            subject=subject,
+            html_content=content
+        )
+        
+        sg = SendGridAPIClient(SENDGRID_API_KEY)
+        response = sg.send(message)
+        return response.status_code == 202
+    except Exception as e:
+        print(f"Failed to send email notification: {str(e)}")
+        return False
+
 # Models
 class AdminLogin(BaseModel):
     email: EmailStr
