@@ -178,10 +178,10 @@ async def update_admin_credentials(update_data: AdminUpdate, current_user: str =
 async def get_about_us():
     about_content = await db.about_us.find_one(sort=[("updated_at", -1)])
     if not about_content:
-        # Default content
+        # Default content - preserving original text
         default_content = {
             "id": str(uuid.uuid4()),
-            "content": "Welcome to Monday Knights - a community dedicated to making a positive impact through activism and social engagement.",
+            "content": "Monday Knights is a grassroots organization focused on developing intersectional power. Combining historic strategies with advancements in technology, we seek to reinvigorate and revolutionize community participation, harm reduction and mutual aid systems.\n\nThrough building communal spaces and fostering strong alliances across affinity groups, we aim to create sustainable social and political momentum.",
             "updated_at": datetime.utcnow(),
             "updated_by": "system"
         }
