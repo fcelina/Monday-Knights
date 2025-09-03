@@ -711,9 +711,27 @@ const AdminDashboard = ({ onLogout }) => {
             <div className="blog-posts-admin">
               {blogPosts.map((post) => (
                 <div key={post.id} className="blog-post-admin">
-                  <h4>{post.title}</h4>
-                  <p>{post.content.substring(0, 100)}...</p>
-                  <button onClick={() => deleteBlogPost(post.id)}>Delete</button>
+                  <div>
+                    <h4>{post.title}</h4>
+                    <p>{post.content.substring(0, 100)}...</p>
+                  </div>
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <button 
+                      onClick={() => editBlogPost(post)}
+                      style={{ 
+                        background: '#ca6ce6', 
+                        color: 'white',
+                        border: 'none',
+                        padding: '8px 15px',
+                        borderRadius: '3px',
+                        cursor: 'pointer',
+                        fontSize: '12px'
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button onClick={() => deleteBlogPost(post.id)}>Delete</button>
+                  </div>
                 </div>
               ))}
             </div>
