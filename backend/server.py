@@ -293,10 +293,27 @@ async def submit_individual_contact(contact_data: IndividualContactCreate, backg
     return contact_obj
 
 @api_router.post("/contact/business", response_model=BusinessContact)
-async def submit_business_contact(contact_data: BusinessContactCreate):
+async def submit_business_contact(contact_data: BusinessContactCreate, background_tasks: BackgroundTasks):
     contact_dict = contact_data.dict()
     contact_obj = BusinessContact(**contact_dict)
     await db.business_contacts.insert_one(contact_obj.dict())
+    
+    # Send email notification in background
+    background_tasks.add_task(
+        send_notification_email,
+        "New Business Contact Entry - Monday Knights",
+        f"""
+        <h3>New Business Contact Submission</h3>
+        <p><strong>Company:</strong> {contact_obj.company_name}</p>
+        <p><strong>Contact Person:</strong> {contact_obj.contact_person}</p>
+        <p><strong>Email:</strong> {contact_obj.email}</p>
+        <p><strong>Phone:</strong> {contact_obj.phone}</p>
+        <p><strong>Message:</strong> {contact_obj.message}</p>
+        <p><strong>Submitted:</strong> {contact_obj.created_at.strftime('%Y-%m-%d %H:%M:%S')}</p>
+        <p><a href="https://event-portal-8.preview.emergentagent.com/admin">View in Admin Panel</a></p>
+        """
+    )
+    
     return contact_obj
 
 @api_router.get("/contact/individual", response_model=List[IndividualContact])
