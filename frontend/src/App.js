@@ -593,6 +593,36 @@ const AdminDashboard = ({ onLogout }) => {
     }
   };
 
+  const editBlogPost = (post) => {
+    setEditingPost(post);
+    setNewPost({
+      title: post.title,
+      content: post.content,
+      image_url: post.image_url || ''
+    });
+  };
+
+  const updateBlogPost = async () => {
+    setLoading(true);
+    try {
+      await axios.put(`${API}/blog-posts/${editingPost.id}`, newPost, getAuthHeaders());
+      setNewPost({ title: '', content: '', image_url: '' });
+      setEditingPost(null);
+      fetchBlogPosts();
+      setMessage('Blog post updated successfully!');
+    } catch (error) {
+      setMessage('Error updating blog post.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const cancelEdit = () => {
+    setEditingPost(null);
+    setNewPost({ title: '', content: '', image_url: '' });
+    setMessage('');
+  };
+
   const deleteBlogPost = async (postId) => {
     if (!window.confirm('Are you sure you want to delete this post?')) return;
     
