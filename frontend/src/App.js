@@ -677,7 +677,7 @@ const AdminDashboard = ({ onLogout }) => {
 
         {activeTab === 'events' && (
           <div className="tab-content">
-            <h3>Create New Post</h3>
+            <h3>{editingPost ? 'Edit Post' : 'Create New Post'}</h3>
             <input
               type="text"
               placeholder="Post Title"
@@ -696,9 +696,16 @@ const AdminDashboard = ({ onLogout }) => {
               onChange={(e) => setNewPost({...newPost, content: e.target.value})}
               rows="6"
             />
-            <button onClick={createBlogPost} disabled={loading}>
-              {loading ? 'Creating...' : 'Create Post'}
-            </button>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button onClick={editingPost ? updateBlogPost : createBlogPost} disabled={loading}>
+                {loading ? (editingPost ? 'Updating...' : 'Creating...') : (editingPost ? 'Update Post' : 'Create Post')}
+              </button>
+              {editingPost && (
+                <button onClick={cancelEdit} disabled={loading} style={{ background: '#666' }}>
+                  Cancel
+                </button>
+              )}
+            </div>
 
             <h3>Existing Posts</h3>
             <div className="blog-posts-admin">
