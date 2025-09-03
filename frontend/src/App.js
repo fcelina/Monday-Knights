@@ -36,6 +36,10 @@ const MondayKnightsWebsite = () => {
     }
   };
 
+  const getAuthHeaders = () => ({
+    headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
+  });
+
   const fetchBlogPosts = async () => {
     try {
       const response = await axios.get(`${API}/blog-posts`);
