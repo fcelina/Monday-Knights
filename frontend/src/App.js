@@ -656,6 +656,12 @@ const AdminDashboard = ({ onLogout }) => {
           >
             Events & Posts
           </button>
+          <button 
+            className={activeTab === 'contacts' ? 'active' : ''} 
+            onClick={() => setActiveTab('contacts')}
+          >
+            Contact Submissions
+          </button>
         </div>
 
         {message && <div className="admin-message">{message}</div>}
