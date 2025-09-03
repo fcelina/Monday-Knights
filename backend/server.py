@@ -270,10 +270,26 @@ async def delete_blog_post(post_id: str, current_user: str = Depends(verify_toke
 
 # Contact Forms
 @api_router.post("/contact/individual", response_model=IndividualContact)
-async def submit_individual_contact(contact_data: IndividualContactCreate):
+async def submit_individual_contact(contact_data: IndividualContactCreate, background_tasks: BackgroundTasks):
     contact_dict = contact_data.dict()
     contact_obj = IndividualContact(**contact_dict)
     await db.individual_contacts.insert_one(contact_obj.dict())
+    
+    # Send email notification in background
+    background_tasks.add_task(
+        send_notification_email,
+        "New Individual Contact Entry - Monday Knights",
+        f"""
+        <h3>New Individual Contact Submission</h3>
+        <p><strong>Name:</strong> {contact_obj.name}</p>
+        <p><strong>Email:</strong> {contact_obj.email}</p>
+        <p><strong>Phone:</strong> {contact_obj.phone}</p>
+        <p><strong>Message:</strong> {contact_obj.message}</p>
+        <p><strong>Submitted:</strong> {contact_obj.created_at.strftime('%Y-%m-%d %H:%M:%S')}</p>
+        <p><a href="https://event-portal-8.preview.emergentagent.com/admin">View in Admin Panel</a></p>
+        """
+    )
+    
     return contact_obj
 
 @api_router.post("/contact/business", response_model=BusinessContact)
