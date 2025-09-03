@@ -231,7 +231,8 @@ def main():
     print("=" * 60)
     
     failed_tests = []
-    for test_name, (success, _) in test_results:
+    for test_name, result in test_results:
+        success = result[0] if isinstance(result, tuple) else result
         status = "✅ PASS" if success else "❌ FAIL"
         print(f"{status} - {test_name}")
         if not success:
