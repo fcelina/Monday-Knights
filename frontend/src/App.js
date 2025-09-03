@@ -49,6 +49,19 @@ const MondayKnightsWebsite = () => {
     }
   };
 
+  const fetchContacts = async () => {
+    try {
+      const [individualResponse, businessResponse] = await Promise.all([
+        axios.get(`${API}/contact/individual`, getAuthHeaders()),
+        axios.get(`${API}/contact/business`, getAuthHeaders())
+      ]);
+      setIndividualContacts(individualResponse.data);
+      setBusinessContacts(businessResponse.data);
+    } catch (error) {
+      console.error('Error fetching contacts:', error);
+    }
+  };
+
   const showOverlay = (overlayName) => {
     setActiveOverlay(overlayName);
   };
