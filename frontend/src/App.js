@@ -765,6 +765,92 @@ const AdminDashboard = ({ onLogout }) => {
             </div>
           </div>
         )}
+
+        {activeTab === 'contacts' && (
+          <div className="tab-content">
+            <h3>Contact Form Submissions</h3>
+            
+            <div style={{ marginBottom: '2rem' }}>
+              <h4 style={{ color: '#ca6ce6', marginBottom: '1rem' }}>
+                Individual Contacts ({individualContacts.length})
+              </h4>
+              {individualContacts.length === 0 ? (
+                <p style={{ color: '#ccc', fontStyle: 'italic' }}>No individual submissions yet.</p>
+              ) : (
+                <div style={{ maxHeight: '300px', overflowY: 'auto', marginBottom: '2rem' }}>
+                  {individualContacts.map((contact) => (
+                    <div key={contact.id} style={{
+                      background: 'rgba(202, 108, 230, 0.1)',
+                      border: '1px solid rgba(202, 108, 230, 0.3)',
+                      borderRadius: '8px',
+                      padding: '1rem',
+                      marginBottom: '1rem'
+                    }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                        <div><strong>Name:</strong> {contact.name}</div>
+                        <div><strong>Email:</strong> <a href={`mailto:${contact.email}`} style={{ color: '#ca6ce6' }}>{contact.email}</a></div>
+                        <div><strong>Phone:</strong> {contact.phone}</div>
+                        <div><strong>Date:</strong> {new Date(contact.created_at).toLocaleDateString()}</div>
+                      </div>
+                      <div><strong>Message:</strong></div>
+                      <div style={{ background: 'rgba(0,0,0,0.3)', padding: '0.5rem', borderRadius: '4px', marginTop: '0.5rem' }}>
+                        {contact.message}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div>
+              <h4 style={{ color: '#ca6ce6', marginBottom: '1rem' }}>
+                Business Contacts ({businessContacts.length})
+              </h4>
+              {businessContacts.length === 0 ? (
+                <p style={{ color: '#ccc', fontStyle: 'italic' }}>No business submissions yet.</p>
+              ) : (
+                <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                  {businessContacts.map((contact) => (
+                    <div key={contact.id} style={{
+                      background: 'rgba(255, 215, 0, 0.1)',
+                      border: '1px solid rgba(255, 215, 0, 0.3)',
+                      borderRadius: '8px',
+                      padding: '1rem',
+                      marginBottom: '1rem'
+                    }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                        <div><strong>Company:</strong> {contact.company_name}</div>
+                        <div><strong>Contact:</strong> {contact.contact_person}</div>
+                        <div><strong>Email:</strong> <a href={`mailto:${contact.email}`} style={{ color: '#ca6ce6' }}>{contact.email}</a></div>
+                        <div><strong>Phone:</strong> {contact.phone}</div>
+                        <div><strong>Date:</strong> {new Date(contact.created_at).toLocaleDateString()}</div>
+                      </div>
+                      <div><strong>Message:</strong></div>
+                      <div style={{ background: 'rgba(0,0,0,0.3)', padding: '0.5rem', borderRadius: '4px', marginTop: '0.5rem' }}>
+                        {contact.message}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <button 
+              onClick={fetchContacts} 
+              style={{ 
+                marginTop: '1rem',
+                background: '#ca6ce6',
+                color: 'white',
+                border: 'none',
+                padding: '10px 20px',
+                borderRadius: '5px',
+                cursor: 'pointer'
+              }}
+            >
+              Refresh Contacts
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
