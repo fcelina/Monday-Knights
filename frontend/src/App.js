@@ -14,6 +14,8 @@ const MondayKnightsWebsite = () => {
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [formData, setFormData] = useState({});
   const [blogPosts, setBlogPosts] = useState([]);
+  const [individualContacts, setIndividualContacts] = useState([]);
+  const [businessContacts, setBusinessContacts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
