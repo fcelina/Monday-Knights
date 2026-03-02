@@ -9,6 +9,7 @@ const API = `${BACKEND_URL}/api`;
 // Main Website Component (preserving original design)
 const MondayKnightsWebsite = () => {
   const [activeOverlay, setActiveOverlay] = useState(null);
+  const [contactStep, setContactStep] = useState('menu'); // 'menu' or 'forms'
   const [aboutContent, setAboutContent] = useState("Action Aid Community\n\nMonday Knights is an affinity group based on the premise that Revolutionary work must be made available to everyone. There are a multitude of avenues to pursue in our fight for liberation, and we are committed to highlighting and supporting them.\n\nIn this capitalist society, each one of us is faced with obstacles that dictate our capacity to participate. Be they physical limitations, personal obligations or time constraints, the concept of engaging in society challenging struggles can seem intimidating. We exist to bridge the gap between revolutionary enthusiasm and meaningful action.\n\nOur philosophy is simple: Anyone can contribute one day a month to the betterment of society. You tell us what day works for you, and we will plug you in!");
   const [userType, setUserType] = useState('');
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
@@ -68,6 +69,7 @@ const MondayKnightsWebsite = () => {
 
   const closeOverlay = () => {
     setActiveOverlay(null);
+    setContactStep('menu'); // Reset to menu when closing
     setUserType('');
     setFormData({});
     setMessage('');
@@ -168,10 +170,10 @@ const MondayKnightsWebsite = () => {
 
   return (
     <div className="app-container">
-      {/* Original Background Image */}
+      {/* Updated Background Image */}
       <img 
         id="backgroundImage" 
-        src="https://i.postimg.cc/JnYv963V/background.jpg" 
+        src="https://customer-assets.emergentagent.com/job_event-portal-8/artifacts/a8xh0uxg_New%20Background.png" 
         alt="Background" 
         style={{ display: 'block' }}
       />
@@ -195,7 +197,7 @@ const MondayKnightsWebsite = () => {
         </div>
       )}
 
-      {/* Contact Us Overlay - preserving original form structure */}
+      {/* Contact Us Overlay - New Sub-menu Structure */}
       {activeOverlay === 'contact' && (
         <div className="overlay" onClick={(e) => e.target.className === 'overlay' && closeOverlay()}>
           <div className="overlay-content">
@@ -207,178 +209,298 @@ const MondayKnightsWebsite = () => {
               </div>
             )}
 
-            <form id="contactForm">
-              <div className="form-group">
-                <label className="form-label">Are you an individual or business?</label>
-                <select 
-                  className="form-select" 
-                  value={userType} 
-                  onChange={(e) => showDynamicForm(e.target.value)}
+            {/* Main Contact Menu */}
+            {contactStep === 'menu' && (
+              <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
+                <h3 style={{ color: '#ca6ce6', marginBottom: '2rem', fontSize: '1.8rem' }}>
+                  Contact Monday Knights
+                </h3>
+                
+                {/* Subscribe to Email List */}
+                <div 
+                  className="contact-menu-item"
+                  onClick={() => setContactStep('forms')}
+                  style={{
+                    background: 'rgba(202, 108, 230, 0.1)',
+                    border: '2px solid #ca6ce6',
+                    borderRadius: '15px',
+                    padding: '2rem',
+                    marginBottom: '2rem',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    ':hover': { transform: 'scale(1.02)' }
+                  }}
+                  onMouseEnter={(e) => e.target.style.transform = 'scale(1.02)'}
+                  onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
                 >
-                  <option value="">Select...</option>
-                  <option value="individual">Individual</option>
-                  <option value="business">Business</option>
-                </select>
-              </div>
-              
-              {/* Dynamic Form */}
-              {userType === 'individual' && (
-                <div className="dynamic-form">
-                  <div className="form-group">
-                    <label className="form-label">Name</label>
-                    <input 
-                      type="text" 
-                      className="form-input" 
-                      value={formData.name || ''} 
-                      onChange={(e) => handleInputChange('name', e.target.value)}
-                      required 
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Last Name</label>
-                    <input 
-                      type="text" 
-                      className="form-input" 
-                      value={formData.lastName || ''} 
-                      onChange={(e) => handleInputChange('lastName', e.target.value)}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Email</label>
-                    <input 
-                      type="email" 
-                      className="form-input" 
-                      value={formData.email || ''} 
-                      onChange={(e) => handleInputChange('email', e.target.value)}
-                      required 
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Phone</label>
-                    <input 
-                      type="tel" 
-                      className="form-input" 
-                      placeholder="(xxx) xxx-xxxx" 
-                      value={formData.phone || ''} 
-                      onChange={(e) => handleInputChange('phone', formatPhoneNumber(e.target.value))}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Message (optional)</label>
-                    <textarea 
-                      className="form-input" 
-                      rows="4"
-                      value={formData.message || ''} 
-                      onChange={(e) => handleInputChange('message', e.target.value)}
-                      placeholder="Tell us how you'd like to get involved..."
-                    />
-                  </div>
-                  
-                  {/* Privacy Policy Checkbox */}
-                  <div className="checkbox-container">
-                    <input
-                      type="checkbox"
-                      id="individual-privacy"
-                      checked={formData.privacyAgreed !== undefined ? formData.privacyAgreed : true}
-                      onChange={(e) => handleInputChange('privacyAgreed', e.target.checked)}
-                    />
-                    <label htmlFor="individual-privacy" className="checkbox-label">
-                      By checking this box, you agree to receive communications and share your information with Monday Knights. 
-                      Please review our <span className="privacy-link" onClick={() => setShowPrivacyPolicy(true)}>Privacy Policy</span> for details.
-                    </label>
-                  </div>
+                  <h4 style={{ color: '#ffd700', marginBottom: '1rem', fontSize: '1.3rem' }}>
+                    Subscribe to Email List
+                  </h4>
+                  <p style={{ color: '#e0e0e0', fontSize: '1rem' }}>
+                    Join our community and stay updated with events and announcements
+                  </p>
                 </div>
-              )}
 
-              {userType === 'business' && (
-                <div className="dynamic-form">
+                {/* Follow Us on Instagram */}
+                <div style={{
+                  background: 'rgba(255, 215, 0, 0.1)',
+                  border: '2px solid #ffd700',
+                  borderRadius: '15px',
+                  padding: '2rem',
+                  textAlign: 'center'
+                }}>
+                  <h4 style={{ color: '#ca6ce6', marginBottom: '1rem', fontSize: '1.3rem' }}>
+                    Follow Us
+                  </h4>
+                  <p style={{ color: '#e0e0e0', marginBottom: '1.5rem' }}>
+                    Stay connected on social media
+                  </p>
+                  
+                  {/* Instagram Logo and Link */}
+                  <a 
+                    href="https://www.instagram.com/monday_knights_nyc/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'inline-block',
+                      transition: 'transform 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+                    onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                  >
+                    <svg
+                      width="60"
+                      height="60"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      style={{
+                        background: 'linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)',
+                        borderRadius: '12px',
+                        padding: '8px'
+                      }}
+                    >
+                      <path
+                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                        fill="white"
+                      />
+                    </svg>
+                  </a>
+                  
+                  <p style={{ 
+                    color: '#ca6ce6', 
+                    marginTop: '1rem', 
+                    fontSize: '0.9rem',
+                    fontWeight: '500'
+                  }}>
+                    @monday_knights_nyc
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Email Subscription Forms (moved from main contact) */}
+            {contactStep === 'forms' && (
+              <div>
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  marginBottom: '2rem',
+                  gap: '1rem'
+                }}>
+                  <button 
+                    onClick={() => setContactStep('menu')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#ca6ce6',
+                      fontSize: '1.5rem',
+                      cursor: 'pointer',
+                      padding: '0.5rem'
+                    }}
+                  >
+                    ← Back
+                  </button>
+                  <h3 style={{ color: '#ca6ce6', margin: 0 }}>
+                    Subscribe to Email List
+                  </h3>
+                </div>
+
+                <form id="contactForm">
                   <div className="form-group">
-                    <label className="form-label">Name</label>
-                    <input 
-                      type="text" 
-                      className="form-input" 
-                      value={formData.name || ''} 
-                      onChange={(e) => handleInputChange('name', e.target.value)}
-                      required 
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Last Name</label>
-                    <input 
-                      type="text" 
-                      className="form-input" 
-                      value={formData.lastName || ''} 
-                      onChange={(e) => handleInputChange('lastName', e.target.value)}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Business Name</label>
-                    <input 
-                      type="text" 
-                      className="form-input" 
-                      value={formData.businessName || ''} 
-                      onChange={(e) => handleInputChange('businessName', e.target.value)}
-                      required 
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Business Contact Email</label>
-                    <input 
-                      type="email" 
-                      className="form-input" 
-                      value={formData.businessEmail || ''} 
-                      onChange={(e) => handleInputChange('businessEmail', e.target.value)}
-                      required 
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Business Phone Number</label>
-                    <input 
-                      type="tel" 
-                      className="form-input" 
-                      placeholder="(xxx) xxx-xxxx" 
-                      value={formData.businessPhone || ''} 
-                      onChange={(e) => handleInputChange('businessPhone', formatPhoneNumber(e.target.value))}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Message (optional)</label>
-                    <textarea 
-                      className="form-input" 
-                      rows="4"
-                      value={formData.message || ''} 
-                      onChange={(e) => handleInputChange('message', e.target.value)}
-                      placeholder="Tell us about your business and how we can work together..."
-                    />
+                    <label className="form-label">Are you an individual or business?</label>
+                    <select 
+                      className="form-select" 
+                      value={userType} 
+                      onChange={(e) => showDynamicForm(e.target.value)}
+                    >
+                      <option value="">Select...</option>
+                      <option value="individual">Individual</option>
+                      <option value="business">Business</option>
+                    </select>
                   </div>
                   
-                  {/* Privacy Policy Checkbox */}
-                  <div className="checkbox-container">
-                    <input
-                      type="checkbox"
-                      id="business-privacy"
-                      checked={formData.privacyAgreed !== undefined ? formData.privacyAgreed : true}
-                      onChange={(e) => handleInputChange('privacyAgreed', e.target.checked)}
-                    />
-                    <label htmlFor="business-privacy" className="checkbox-label">
-                      By checking this box, you agree to receive communications and share your information with Monday Knights. 
-                      Please review our <span className="privacy-link" onClick={() => setShowPrivacyPolicy(true)}>Privacy Policy</span> for details.
-                    </label>
-                  </div>
-                </div>
-              )}
-              
-              {userType && (
-                <button 
-                  type="button" 
-                  className={`save-btn ${loading ? 'loading' : ''}`}
-                  onClick={saveForm}
-                  disabled={loading}
-                >
-                  {loading ? 'Saving...' : 'Save'}
-                </button>
-              )}
-            </form>
+                  {/* Individual Form */}
+                  {userType === 'individual' && (
+                    <div className="dynamic-form">
+                      <div className="form-group">
+                        <label className="form-label">Name</label>
+                        <input 
+                          type="text" 
+                          className="form-input" 
+                          value={formData.name || ''} 
+                          onChange={(e) => handleInputChange('name', e.target.value)}
+                          required 
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Last Name</label>
+                        <input 
+                          type="text" 
+                          className="form-input" 
+                          value={formData.lastName || ''} 
+                          onChange={(e) => handleInputChange('lastName', e.target.value)}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Email</label>
+                        <input 
+                          type="email" 
+                          className="form-input" 
+                          value={formData.email || ''} 
+                          onChange={(e) => handleInputChange('email', e.target.value)}
+                          required 
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Phone</label>
+                        <input 
+                          type="tel" 
+                          className="form-input" 
+                          placeholder="(xxx) xxx-xxxx" 
+                          value={formData.phone || ''} 
+                          onChange={(e) => handleInputChange('phone', formatPhoneNumber(e.target.value))}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Message (optional)</label>
+                        <textarea 
+                          className="form-input" 
+                          rows="4"
+                          value={formData.message || ''} 
+                          onChange={(e) => handleInputChange('message', e.target.value)}
+                          placeholder="Tell us how you'd like to get involved..."
+                        />
+                      </div>
+                      
+                      {/* Privacy Policy Checkbox */}
+                      <div className="checkbox-container">
+                        <input
+                          type="checkbox"
+                          id="individual-privacy"
+                          checked={formData.privacyAgreed !== undefined ? formData.privacyAgreed : true}
+                          onChange={(e) => handleInputChange('privacyAgreed', e.target.checked)}
+                        />
+                        <label htmlFor="individual-privacy" className="checkbox-label">
+                          By checking this box, you agree to receive communications and share your information with Monday Knights. 
+                          Please review our <span className="privacy-link" onClick={() => setShowPrivacyPolicy(true)}>Privacy Policy</span> for details.
+                        </label>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Business Form */}
+                  {userType === 'business' && (
+                    <div className="dynamic-form">
+                      <div className="form-group">
+                        <label className="form-label">Name</label>
+                        <input 
+                          type="text" 
+                          className="form-input" 
+                          value={formData.name || ''} 
+                          onChange={(e) => handleInputChange('name', e.target.value)}
+                          required 
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Last Name</label>
+                        <input 
+                          type="text" 
+                          className="form-input" 
+                          value={formData.lastName || ''} 
+                          onChange={(e) => handleInputChange('lastName', e.target.value)}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Business Name</label>
+                        <input 
+                          type="text" 
+                          className="form-input" 
+                          value={formData.businessName || ''} 
+                          onChange={(e) => handleInputChange('businessName', e.target.value)}
+                          required 
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Business Contact Email</label>
+                        <input 
+                          type="email" 
+                          className="form-input" 
+                          value={formData.businessEmail || ''} 
+                          onChange={(e) => handleInputChange('businessEmail', e.target.value)}
+                          required 
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Business Phone Number</label>
+                        <input 
+                          type="tel" 
+                          className="form-input" 
+                          placeholder="(xxx) xxx-xxxx" 
+                          value={formData.businessPhone || ''} 
+                          onChange={(e) => handleInputChange('businessPhone', formatPhoneNumber(e.target.value))}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Message (optional)</label>
+                        <textarea 
+                          className="form-input" 
+                          rows="4"
+                          value={formData.message || ''} 
+                          onChange={(e) => handleInputChange('message', e.target.value)}
+                          placeholder="Tell us about your business and how we can work together..."
+                        />
+                      </div>
+                      
+                      {/* Privacy Policy Checkbox */}
+                      <div className="checkbox-container">
+                        <input
+                          type="checkbox"
+                          id="business-privacy"
+                          checked={formData.privacyAgreed !== undefined ? formData.privacyAgreed : true}
+                          onChange={(e) => handleInputChange('privacyAgreed', e.target.checked)}
+                        />
+                        <label htmlFor="business-privacy" className="checkbox-label">
+                          By checking this box, you agree to receive communications and share your information with Monday Knights. 
+                          Please review our <span className="privacy-link" onClick={() => setShowPrivacyPolicy(true)}>Privacy Policy</span> for details.
+                        </label>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {userType && (
+                    <button 
+                      type="button" 
+                      className={`save-btn ${loading ? 'loading' : ''}`}
+                      onClick={saveForm}
+                      disabled={loading}
+                    >
+                      {loading ? 'Subscribing...' : 'Subscribe'}
+                    </button>
+                  )}
+                </form>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -392,7 +514,7 @@ const MondayKnightsWebsite = () => {
             {/* Monday Knights Header Image */}
             <div className="events-header">
               <img 
-                src="https://customer-assets.emergentagent.com/job_b07a96d4-5313-4d4e-bfd4-4751b0b0c282/artifacts/x1t36jj6_Monday%20Knights%20Header.jpg" 
+                src="https://customer-assets.emergentagent.com/job_event-portal-8/artifacts/wk8rqmze_events%20header.png" 
                 alt="Monday Knights Header" 
                 className="events-header-img"
               />
@@ -565,6 +687,7 @@ const AdminDashboard = ({ onLogout }) => {
   useEffect(() => {
     fetchAboutContent();
     fetchBlogPosts();
+    fetchContacts();
   }, []);
 
   const getAuthHeaders = () => ({
@@ -586,6 +709,19 @@ const AdminDashboard = ({ onLogout }) => {
       setBlogPosts(response.data);
     } catch (error) {
       console.error('Error fetching blog posts:', error);
+    }
+  };
+
+  const fetchContacts = async () => {
+    try {
+      const [individualResponse, businessResponse] = await Promise.all([
+        axios.get(`${API}/contact/individual`, getAuthHeaders()),
+        axios.get(`${API}/contact/business`, getAuthHeaders())
+      ]);
+      setIndividualContacts(individualResponse.data);
+      setBusinessContacts(businessResponse.data);
+    } catch (error) {
+      console.error('Error fetching contacts:', error);
     }
   };
 

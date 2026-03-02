@@ -39,7 +39,7 @@ ADMIN_PASSWORD = "Kn1ghtMark3t!!"
 
 # Email configuration
 SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
-NOTIFICATION_EMAIL = os.environ.get('ADMIN_EMAIL', 'federico.celina@gmail.com')
+NOTIFICATION_EMAIL = os.environ.get('ADMIN_EMAIL', 'MondayKnightsNYC@proton.me')
 
 # Email functions
 def send_notification_email(subject: str, content: str):
@@ -206,7 +206,7 @@ async def update_admin_credentials(update_data: AdminUpdate, current_user: str =
 async def get_about_us():
     about_content = await db.about_us.find_one(sort=[("updated_at", -1)])
     if not about_content:
-        # Default content - preserving original text
+        # Default content - Action Aid Community text
         default_content = {
             "id": str(uuid.uuid4()),
             "content": "Action Aid Community\n\nMonday Knights is an affinity group based on the premise that Revolutionary work must be made available to everyone. There are a multitude of avenues to pursue in our fight for liberation, and we are committed to highlighting and supporting them.\n\nIn this capitalist society, each one of us is faced with obstacles that dictate our capacity to participate. Be they physical limitations, personal obligations or time constraints, the concept of engaging in society challenging struggles can seem intimidating. We exist to bridge the gap between revolutionary enthusiasm and meaningful action.\n\nOur philosophy is simple: Anyone can contribute one day a month to the betterment of society. You tell us what day works for you, and we will plug you in!",
