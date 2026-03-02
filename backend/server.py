@@ -31,15 +31,16 @@ api_router = APIRouter(prefix="/api")
 
 # Security
 security = HTTPBearer()
-SECRET_KEY = "monday_knights_secret_key_2025"
+SECRET_KEY = os.environ.get('SECRET_KEY', 'change_me_in_production')
 
-# Admin credentials
-ADMIN_EMAIL = "MondayKnightsNYC@proton.me"
-ADMIN_PASSWORD = "Kn1ghtMark3t!!"
+# Admin credentials from environment
+ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD')
 
 # Email configuration
 SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
-NOTIFICATION_EMAIL = os.environ.get('ADMIN_EMAIL', 'MondayKnightsNYC@proton.me')
+NOTIFICATION_EMAIL = os.environ.get('NOTIFICATION_EMAIL', ADMIN_EMAIL)
+APP_URL = os.environ.get('APP_URL', 'https://knights-deploy.preview.emergentagent.com')
 
 # Email functions
 def send_notification_email(subject: str, content: str):
@@ -231,7 +232,7 @@ async def update_about_us(content_update: AboutUsUpdate, current_user: str = Dep
 # Blog Posts Management
 @api_router.get("/blog-posts", response_model=List[BlogPost])
 async def get_blog_posts():
-    posts = await db.blog_posts.find().sort("created_at", -1).to_list(length=None)
+    posts = await db.blog_posts.find().sort("created_at", -1).to_list(length=100)
     return [BlogPost(**post) for post in posts]
 
 @api_router.post("/blog-posts", response_model=BlogPost)
@@ -286,7 +287,7 @@ async def submit_individual_contact(contact_data: IndividualContactCreate, backg
         <p><strong>Phone:</strong> {contact_obj.phone}</p>
         <p><strong>Message:</strong> {contact_obj.message}</p>
         <p><strong>Submitted:</strong> {contact_obj.created_at.strftime('%Y-%m-%d %H:%M:%S')}</p>
-        <p><a href="https://event-portal-8.preview.emergentagent.com/admin">View in Admin Panel</a></p>
+        <p><a href="{APP_URL}/admin">View in Admin Panel</a></p>
         """
     )
     
@@ -310,7 +311,7 @@ async def submit_business_contact(contact_data: BusinessContactCreate, backgroun
         <p><strong>Phone:</strong> {contact_obj.phone}</p>
         <p><strong>Message:</strong> {contact_obj.message}</p>
         <p><strong>Submitted:</strong> {contact_obj.created_at.strftime('%Y-%m-%d %H:%M:%S')}</p>
-        <p><a href="https://event-portal-8.preview.emergentagent.com/admin">View in Admin Panel</a></p>
+        <p><a href="{APP_URL}/admin">View in Admin Panel</a></p>
         """
     )
     
@@ -318,12 +319,12 @@ async def submit_business_contact(contact_data: BusinessContactCreate, backgroun
 
 @api_router.get("/contact/individual", response_model=List[IndividualContact])
 async def get_individual_contacts(current_user: str = Depends(verify_token)):
-    contacts = await db.individual_contacts.find().sort("created_at", -1).to_list(length=None)
+    contacts = await db.individual_contacts.find().sort("created_at", -1).to_list(length=100)
     return [IndividualContact(**contact) for contact in contacts]
 
 @api_router.get("/contact/business", response_model=List[BusinessContact])
 async def get_business_contacts(current_user: str = Depends(verify_token)):
-    contacts = await db.business_contacts.find().sort("created_at", -1).to_list(length=None)
+    contacts = await db.business_contacts.find().sort("created_at", -1).to_list(length=100)
     return [BusinessContact(**contact) for contact in contacts]
 
 # Include the router in the main app
